@@ -1,0 +1,49 @@
+{
+  "students": [
+    {
+      "name": "Nethra",
+      "branch": "Computer engineering",
+      "id": 1
+    }
+  ],
+  "employess": [],
+  "todos": [
+    {
+      "title": "i am going to place seat in JNTUA in 2026",
+      "status": "going to complete",
+      "id": 6
+    },
+    {
+      "title": "going to lanka",
+      "status": "not completed",
+      "id": 9
+    },
+    {
+      "title": "ecet preparation",
+      "status": "not yet completed",
+      "id": 11
+    },
+    {
+      "title": "fchgvluh",
+      "status": "fgitgyhu",
+      "id": 12
+    }
+  ],
+  "posts": [
+    {
+      "id": 1,
+      "title": "json-server",
+      "author": "typicode"
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  }
+}

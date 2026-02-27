@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body id="body">
+  
+    <button onclick="addtodo()">addtodo</button>
+    <button onclick="modifytodo()">modifytodo</button>
+    <button onclick="mdffieldcnt()">modifycontentfield</button>
+
+    <table border="1">
+        <thead>
+             <tr>
+            <th>id</th>
+            <th>title</th>
+            <th>status</th>
+            <th>Delete Todo</th>
+  
+           </tr>
+           </thead>
+              <tbody id="tablebody">
+                </tbody>
+     </table> 
+     <div id="div1"></div>
+     
+    <script>
+    let todos=[]
+   
+    var div=document.getElementById("div1")
+    function genui(todos){
+        
+        
+        var table = document.getElementById("tablebody");
+         todos.forEach((todo)=>{
+            var tr = document.createElement("tr");
+              tr.innerHTML+=
+               `
+                <td>${todo.id}</td>
+                <td>${todo.title}</td>
+                <td>${todo.status}</td>`
+            var td=document.createElement("td")
+            var del=document.createElement("button")
+            del.textContent="Delete"
+            del.addEventListener("click",function(){
+               
+                         deltodo(todo.id)
+
+            }) 
+          
+            td.appendChild(del)
+            tr.appendChild(td)
+            table.appendChild(tr)
+                
+        })
+
+    }
+    function deltodo(id){
+       
+       
+            fetch(`http://localhost:3000/todos/${id}`,{
+                method:"DELETE"
+            })
+            .then(() => { tr.remove() })
+
+    }
+    function addtodo(){
+        div.innerHTML=""
+        var tit=document.createElement("input")
+        var sta=document.createElement("input")
+        var addbtn=document.createElement("button")
+        addbtn.textContent="Add Todo"
+        addbtn.addEventListener("click",function(){
+            fetch("http://localhost:3000/todos",{
+                method:"POST",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                body:JSON.stringify({
+                    title:tit.value,
+                    status:sta.value
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                gettodos()
+            })
+        })
+        div.append(tit,sta,addbtn)
+    }
+    function modifytodo(){
+
+        div.innerHTML=""
+        var tit=document.createElement("input")
+        var sta=document.createElement("input")
+        var patchid=document.createElement("input")
+        patchid.placeholder="Enter todo id to modify"
+        var mdfbtn=document.createElement("button")
+        mdfbtn.textContent="Modify Todo"
+        mdfbtn.addEventListener("click",function(){
+            fetch(`http://localhost:3000/todos/${patchid.value}`,{
+                method:"PUT",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                body:JSON.stringify({
+                    title:tit.value,
+                    status:sta.value
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                gettodos()
+            })
+        })
+        div.append(patchid,tit,sta,mdfbtn)
+        
+    }
+      function mdffieldcnt(){
+        
+        div.innerHTML=""
+        var patchid=document.createElement("input")
+        patchid.placeholder="Enter todo id to modify"
+
+        var field=document.createElement("input")
+        field.placeholder="Enter field to modify (title or status)"
+
+        var cnt=document.createElement("input")
+        cnt.placeholder="Enter new value"
+
+        var mdfcntbtn=document.createElement("button")
+        mdfcntbtn.textContent="Modify Todo content"
+        mdfcntbtn.addEventListener("click",function(){
+            fetch(`http://localhost:3000/todos/${patchid.value}`,{
+                method:"PATCH",
+                headers:{
+                    "Content-Type":"application/json"
+                },
+                body:JSON.stringify({
+                    [field.value]:cnt.value
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                gettodos()
+            })
+        })
+        div.append(patchid,field,cnt,mdfcntbtn)
+
+    }
+    
+
+    function gettodos(){
+          document.getElementById("tablebody")
+        .innerHTML=""
+      //  div.innerHTML=""
+        fetch("http://localhost:3000/todos")
+        .then((res) => { return res.json() })
+        .then((data) => {  console.log(data)
+            genui(data)
+           })
+     }  
+     gettodos()    
+
+   
+    </script>
+</body>
+</html>
